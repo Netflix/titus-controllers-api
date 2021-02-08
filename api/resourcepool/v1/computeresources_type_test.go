@@ -143,8 +143,14 @@ func TestComputeResource_GreaterThan(t *testing.T) {
 	assert.Assert(t, left.GreaterThan(ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}))
 }
 
-func TestComputeResource_IsAboveZero(t *testing.T) {
-	assert.Assert(t, !Zero.IsAboveZero())
-	assert.Assert(t, ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 0, NetworkMBPS: 1}.IsAboveZero())
-	assert.Assert(t, !ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 0, NetworkMBPS: -1}.IsAboveZero())
+func TestComputeResource_IsAnyAboveZero(t *testing.T) {
+	assert.Assert(t, !Zero.IsAnyAboveZero())
+	assert.Assert(t, ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 0, NetworkMBPS: 1}.IsAnyAboveZero())
+	assert.Assert(t, !ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 0, NetworkMBPS: -1}.IsAnyAboveZero())
+}
+
+func TestComputeResource_IsAnyBelowZero(t *testing.T) {
+	assert.Assert(t, !Zero.IsAnyAboveZero())
+	assert.Assert(t, !ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 1, NetworkMBPS: 0}.IsAnyBelowZero())
+	assert.Assert(t, ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 1, NetworkMBPS: -1}.IsAnyBelowZero())
 }

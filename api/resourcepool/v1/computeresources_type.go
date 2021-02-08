@@ -266,6 +266,10 @@ func (r ComputeResource) GreaterThan(second ComputeResource) bool {
 	return allNotSmaller && r != second
 }
 
-func (r ComputeResource) IsAboveZero() bool {
+func (r ComputeResource) IsAnyAboveZero() bool {
 	return r.CPU > 0 || r.GPU > 0 || r.MemoryMB > 0 || r.DiskMB > 0 || r.NetworkMBPS > 0
+}
+
+func (r ComputeResource) IsAnyBelowZero() bool {
+	return r.CPU < 0 || r.GPU < 0 || r.MemoryMB < 0 || r.DiskMB < 0 || r.NetworkMBPS < 0
 }
