@@ -15,10 +15,17 @@ limitations under the License.
 */
 package v1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	poolV1 "github.com/Netflix/titus-controllers-api/api/resourcepool/v1"
+)
+
+// +genclient
+// +resourceName=capacitygroups
 
 // +kubebuilder:object:root=true
-
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type CapacityGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -27,22 +34,18 @@ type CapacityGroup struct {
 }
 
 type CapacityGroupSpec struct {
-	CapacityGroupName string `json:"capacityGroupName"`
-	ResourcePoolName  string `json:"resourcePoolName"`
-	SchedulerName     string `json:"schedulerName"`
-	CreatedBy         string `json:"createdBy"`
-	InstanceCount     uint32 `json:"instanceCount"`
-	ComputeResource   `json:"resourceDimensions"`
+	CapacityGroupName      string `json:"capacityGroupName"`
+	ResourcePoolName       string `json:"resourcePoolName"`
+	SchedulerName          string `json:"schedulerName"`
+	CreatedBy              string `json:"createdBy"`
+	InstanceCount          uint32 `json:"instanceCount"`
+	poolV1.ComputeResource `json:"resourceDimensions"`
 }
 
 // +kubebuilder:object:root=true
-
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type CapacityGroupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CapacityGroup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CapacityGroup{}, &CapacityGroupList{})
 }

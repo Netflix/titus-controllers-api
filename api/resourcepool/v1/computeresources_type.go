@@ -226,7 +226,8 @@ func (r ComputeResource) SplitByWithCeil(second ComputeResource) int64 {
 	return result
 }
 
-// For a compute resource to be strictly less than the other one, all individual resources (CPU, memory, etc) must be smaller.
+// For a compute resource to be strictly less than the other one, all individual resources (CPU, memory, etc)
+// must be smaller.
 func (r ComputeResource) StrictlyLessThan(second ComputeResource) bool {
 	return r.CPU < second.CPU &&
 		r.GPU < second.GPU &&
@@ -235,8 +236,8 @@ func (r ComputeResource) StrictlyLessThan(second ComputeResource) bool {
 		r.NetworkMBPS < second.NetworkMBPS
 }
 
-// For a compute resource to be less than the other one, all individual resources (CPU, memory, etc) must not greater than
-// their counterparts, and at least one of them must be smaller.
+// For a compute resource to be less than the other one, all individual resources (CPU, memory, etc) must not be
+// greater than their counterparts, and at least one of them must be smaller.
 func (r ComputeResource) LessThan(second ComputeResource) bool {
 	allNotBigger := r.CPU <= second.CPU &&
 		r.GPU <= second.GPU &&
@@ -246,7 +247,8 @@ func (r ComputeResource) LessThan(second ComputeResource) bool {
 	return allNotBigger && r != second
 }
 
-// For a compute resource to be strictly greater than the other one, all individual resources (CPU, memory, etc) must be greater.
+// For a compute resource to be strictly greater than the other one, all individual resources (CPU, memory, etc)
+// must be greater.
 func (r ComputeResource) StrictlyGreaterThan(second ComputeResource) bool {
 	return r.CPU > second.CPU &&
 		r.GPU > second.GPU &&
@@ -255,8 +257,8 @@ func (r ComputeResource) StrictlyGreaterThan(second ComputeResource) bool {
 		r.NetworkMBPS > second.NetworkMBPS
 }
 
-// For a compute resource to be greater than the other one, all individual resources (CPU, memory, etc) must not be smaller than
-// their counterparts, and at least one of them must be bigger.
+// For a compute resource to be greater than the other one, all individual resources (CPU, memory, etc)
+// must not be smaller than their counterparts, and at least one of them must be bigger.
 func (r ComputeResource) GreaterThan(second ComputeResource) bool {
 	allNotSmaller := r.CPU >= second.CPU &&
 		r.GPU >= second.GPU &&

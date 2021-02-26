@@ -17,7 +17,24 @@ package v1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+// +genclient
+// +resourceName=resourcepoolconfigs
+
+// +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+type ResourcePoolConfig struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	Spec              ResourcePoolSpec `json:"spec,omitempty"`
+}
+
+// +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+type ResourcePoolConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ResourcePoolConfig `json:"items"`
+}
 
 type ResourceShape struct {
 	ComputeResource `json:",inline"`
@@ -73,25 +90,4 @@ type ResourcePoolSpec struct {
 
 	// Resource demand fulfillment report.
 	Status ResourceDemandStatus `json:"resourceDemandStatus"`
-}
-
-// +kubebuilder:object:root=true
-
-type ResourcePoolConfig struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec ResourcePoolSpec `json:"spec,omitempty"`
-}
-
-// +kubebuilder:object:root=true
-
-type ResourcePoolConfigList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ResourcePoolConfig `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ResourcePoolConfig{}, &ResourcePoolConfigList{})
 }
