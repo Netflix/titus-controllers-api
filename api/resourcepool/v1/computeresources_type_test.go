@@ -156,7 +156,7 @@ func TestComputeResource_IsAnyBelowZero(t *testing.T) {
 	assert.Assert(t, ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 1, NetworkMBPS: -1}.IsAnyBelowZero())
 }
 
-func Test(t *testing.T) {
+func TestSetAbove(t *testing.T) {
 	source := ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}
 	assert.Assert(t, source.SetAbove(2) == ComputeResource{CPU: 2, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5})
 	assert.Assert(t, source.SetAbove(3) == ComputeResource{CPU: 3, GPU: 3, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5})
