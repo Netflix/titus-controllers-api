@@ -16,6 +16,7 @@ limitations under the License.
 package v1
 
 import (
+	"fmt"
 	"testing"
 
 	"gotest.tools/assert"
@@ -153,4 +154,11 @@ func TestComputeResource_IsAnyBelowZero(t *testing.T) {
 	assert.Assert(t, !Zero.IsAnyAboveZero())
 	assert.Assert(t, !ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 1, NetworkMBPS: 0}.IsAnyBelowZero())
 	assert.Assert(t, ComputeResource{CPU: 0, GPU: 0, MemoryMB: 0, DiskMB: 1, NetworkMBPS: -1}.IsAnyBelowZero())
+}
+
+func TestComputeResource_ToString(t *testing.T) {
+	assert.Equal(t,
+		fmt.Sprintf("%s", ComputeResource{CPU: 8, GPU: 2, MemoryMB: 4096, DiskMB: 8192, NetworkMBPS: 128}),
+		"{cpu=8, gpu=2, memoryMB=4096, diskMB=8192, networkMbps=128}",
+	)
 }

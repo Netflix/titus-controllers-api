@@ -15,7 +15,11 @@ limitations under the License.
 */
 package v1
 
-import "math"
+import (
+	"math"
+	"strconv"
+	"strings"
+)
 
 // Data structure representing compute resources. We use uint64 type as aggregated resources
 // may amount to very large values.
@@ -71,6 +75,16 @@ func (r ComputeResource) SubWithLimit(second ComputeResource, lowerBound int64) 
 		MemoryMB:    sub(r.MemoryMB, second.MemoryMB),
 		DiskMB:      sub(r.DiskMB, second.DiskMB),
 		NetworkMBPS: sub(r.NetworkMBPS, second.NetworkMBPS),
+	}
+}
+
+func (r ComputeResource) SetAbove(lowerBound int64) ComputeResource {
+	return ComputeResource{
+		CPU:         maxInt64(r.CPU, lowerBound),
+		GPU:         maxInt64(r.GPU, lowerBound),
+		MemoryMB:    maxInt64(r.MemoryMB, lowerBound),
+		DiskMB:      maxInt64(r.DiskMB, lowerBound),
+		NetworkMBPS: maxInt64(r.NetworkMBPS, lowerBound),
 	}
 }
 
@@ -274,4 +288,30 @@ func (r ComputeResource) IsAnyAboveZero() bool {
 
 func (r ComputeResource) IsAnyBelowZero() bool {
 	return r.CPU < 0 || r.GPU < 0 || r.MemoryMB < 0 || r.DiskMB < 0 || r.NetworkMBPS < 0
+}
+
+func (r ComputeResource) String() string {
+	b := strings.Builder{}
+	b.WriteString("{")
+
+	b.WriteString("cpu=")
+	b.WriteString(strconv.FormatInt(r.CPU, 10))
+	b.WriteString(", gpu=")
+	b.WriteString(strconv.FormatInt(r.GPU, 10))
+	b.WriteString(", memoryMB=")
+	b.WriteString(strconv.FormatInt(r.MemoryMB, 10))
+	b.WriteString(", diskMB=")
+	b.WriteString(strconv.FormatInt(r.DiskMB, 10))
+	b.WriteString(", networkMbps=")
+	b.WriteString(strconv.FormatInt(r.NetworkMBPS, 10))
+
+	b.WriteString("}")
+	return b.String()
+}
+
+func maxInt64(v1 int64, v2 int64) int64 {
+	if v1 > v2 {
+		return v1
+	}
+	return v2
 }
