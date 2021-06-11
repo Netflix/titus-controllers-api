@@ -16,7 +16,6 @@ limitations under the License.
 package v1
 
 import (
-	"fmt"
 	"testing"
 
 	"gotest.tools/assert"
@@ -132,6 +131,13 @@ func TestComputeResource_StrictlyLessThan(t *testing.T) {
 func TestComputeResource_LessThan(t *testing.T) {
 	left := ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}
 	assert.Assert(t, left.LessThan(ComputeResource{CPU: 2, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}))
+	assert.Assert(t, !left.LessThan(left))
+}
+
+func TestComputeResource_LessThanOrEqual(t *testing.T) {
+	left := ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}
+	assert.Assert(t, left.LessThan(ComputeResource{CPU: 2, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}))
+	assert.Assert(t, left.LessThanOrEqual(left))
 }
 
 func TestComputeResource_StrictlyGreaterThan(t *testing.T) {
@@ -142,6 +148,13 @@ func TestComputeResource_StrictlyGreaterThan(t *testing.T) {
 func TestComputeResource_GreaterThan(t *testing.T) {
 	left := ComputeResource{CPU: 2, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}
 	assert.Assert(t, left.GreaterThan(ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}))
+	assert.Assert(t, !left.GreaterThan(left))
+}
+
+func TestComputeResource_GreaterThanOrEqual(t *testing.T) {
+	left := ComputeResource{CPU: 2, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}
+	assert.Assert(t, left.GreaterThanOrEqual(ComputeResource{CPU: 1, GPU: 2, MemoryMB: 3, DiskMB: 4, NetworkMBPS: 5}))
+	assert.Assert(t, left.GreaterThanOrEqual(left))
 }
 
 func TestComputeResource_IsAnyAboveZero(t *testing.T) {
@@ -167,7 +180,7 @@ func TestSetAbove(t *testing.T) {
 
 func TestComputeResource_ToString(t *testing.T) {
 	assert.Equal(t,
-		fmt.Sprintf("%s", ComputeResource{CPU: 8, GPU: 2, MemoryMB: 4096, DiskMB: 8192, NetworkMBPS: 128}),
+		ComputeResource{CPU: 8, GPU: 2, MemoryMB: 4096, DiskMB: 8192, NetworkMBPS: 128}.String(),
 		"{cpu=8, gpu=2, memoryMB=4096, diskMB=8192, networkMbps=128}",
 	)
 }
