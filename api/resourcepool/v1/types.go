@@ -68,6 +68,9 @@ type ResourcePoolScalingRules struct {
 
 	// Set to true to enable auto scaling of this resource pool.
 	AutoScalingEnabled bool `json:"autoScalingEnabled"`
+
+	// Minimum scale up step. The valid value range is between 1 and MaxIdle. If MaxIdle is zero, MinimumScaleUpStep should be 1.
+	MinimumScaleUpStep int64 `json:"minimumScaleUpStep"`
 }
 
 type ResourcePoolSpec struct {
